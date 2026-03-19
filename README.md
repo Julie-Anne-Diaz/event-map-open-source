@@ -1,2 +1,2 @@
-# event-map-open-source
-create and map events to share with people around you. Displays on a map. 
+# Loop open source interactive event map
+Create, map, and share events with your community—all in one place.
