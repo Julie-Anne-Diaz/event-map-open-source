@@ -47,5 +47,3 @@ __pycache__/
 api/__pycache__/
 api/routers/__pycache__/
 *.pyc
-.env
-api/.env
