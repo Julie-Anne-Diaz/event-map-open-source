@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 import models
 import schemas
-from dependencies import get_db
+from dependencies import get_db, get_current_user
 
 router = APIRouter(
     prefix="/events",
@@ -12,7 +12,7 @@ router = APIRouter(
 
 
 @router.post("/", response_model=schemas.EventResponse)
-def create_event(event: schemas.EventCreate, db: Session = Depends(get_db)):
+def create_event(event: schemas.EventCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     db_event = models.Event(
         creator_user_id=1,  
         title=event.title,
