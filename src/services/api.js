@@ -28,3 +28,18 @@ export async function fetchEvents() {
   if (!res.ok) throw new Error("Failed to fetch events");
   return res.json();
 }
+
+// Create Event — POST /events
+export async function createEvent(eventData) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${BASE_URL}/events`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(eventData),
+  });
+  if (!res.ok) throw new Error("Failed to create event");
+  return res.json();
+}
