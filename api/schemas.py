@@ -21,6 +21,12 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class UserResponse(BaseModel):
+    id: int
+    email: EmailStr
+
+    model_config = {"from_attributes": True}
+
 # Friend request schemas
 class FriendRequestCreate(BaseModel):
     receiver_id: int
@@ -48,6 +54,7 @@ class FriendshipResponse(BaseModel):
 
 # Event schemas
 class EventBase(BaseModel):
+    creator_user_id: int
     title: str
     description: Optional[str] = None
     visibility: str = "public"
@@ -57,7 +64,6 @@ class EventBase(BaseModel):
     location_name: str
     latitude: float = Field(..., ge=-90, le=90)
     longitude: float = Field(..., ge=-180, le=180)
-
 
 class EventCreate(EventBase):
     pass

@@ -14,7 +14,7 @@ router = APIRouter(
 @router.post("/", response_model=schemas.EventResponse)
 def create_event(event: schemas.EventCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     db_event = models.Event(
-        creator_user_id=1,  
+        creator_user_id=event.creator_user_id,  
         title=event.title,
         description=event.description,
         visibility=event.visibility,
