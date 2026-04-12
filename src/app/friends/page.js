@@ -51,8 +51,6 @@ export default function Friends() {
           </ul>
           </div>
         )}
-
-      </div>
     </main>
   );
 }
