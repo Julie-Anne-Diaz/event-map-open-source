@@ -43,3 +43,17 @@ export async function createEvent(eventData) {
   if (!res.ok) throw new Error("Failed to create event");
   return res.json();
 }
+
+export async function addFriend(friendEmail) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${BASE_URL}/friends/add`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify({ email: friendEmail }),
+  });
+  if (!res.ok) throw new Error("Failed to add friend");
+  return res.json();
+}

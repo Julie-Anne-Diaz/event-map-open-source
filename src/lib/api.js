@@ -72,3 +72,19 @@ export async function getUsers() {
 
   return response.json();
 }
+
+export async function addFriend(friendEmail) {
+  const response = await fetch(`${API_BASE_URL}/friends/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: friendEmail }),
+  });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Failed to add friend");
+  }
+
+  return response.json();
+}
