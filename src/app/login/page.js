@@ -3,6 +3,7 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import { registerUser } from "@/lib/api";
+import Link from "next/link";
 
 export default function LoginPage() { 
     const [email, setemail] = useState("");
@@ -43,7 +44,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-md p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Sign In / Sign Up</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Sign In</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -73,6 +74,13 @@ export default function LoginPage() {
           >
             {loading ? "Submitting..." : "Continue"}
           </button>
+          <Link
+            href="/register"
+            className="block text-center text-sm text-gray-600 hover:text-gray-800"
+          >
+            Don't have an account? Sign Up
+          </Link>
+      
         </form>
 
         {message && <p className="mt-4 text-sm text-red-600">{message}</p>}

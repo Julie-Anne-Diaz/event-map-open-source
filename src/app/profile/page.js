@@ -1,3 +1,9 @@
+// "use client"
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { registerUser } from "@/lib/api";
+
+
 export default function ProfilePage() {
   return (
     <main className="min-h-screen flex flex-col bg-gray-50 px-4 pb-20">

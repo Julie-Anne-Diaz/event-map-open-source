@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 export default function BottomNav() {
   const pathname = usePathname();
-  if (pathname === "/" || pathname === "/login") return null;
+  if (pathname === "/" || pathname === "/login" || pathname === "/register") return null;
   const tabs = [
     { name: "Events", href: "/events", icon: "🎉" },
     { name: "Map", href: "/map", icon: "🗺️" },
