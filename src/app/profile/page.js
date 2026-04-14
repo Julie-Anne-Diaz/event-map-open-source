@@ -1,3 +1,9 @@
+// "use client"
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { registerUser } from "@/lib/api";
+
+
 export default function ProfilePage() {
   return (
     <main className="min-h-screen flex flex-col bg-gray-50 px-4 pb-20">
@@ -7,7 +13,7 @@ export default function ProfilePage() {
         <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between">
 
-            {/* Left - avatar and name */}
+            {/* Left - profile photo and name */}
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl">
                 👤

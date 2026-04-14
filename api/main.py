@@ -5,9 +5,7 @@ from database import Base, engine
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(
-    title="Event Mapping API"
-)
+app = FastAPI(title="Event Mapping API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,7 +18,6 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(events.router)
 app.include_router(users.router)
-
 
 @app.get("/")
 def root():
