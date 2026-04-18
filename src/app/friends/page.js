@@ -59,17 +59,17 @@ export default function Friends() {
         {/* Content */}
         {activeTab === "friends" && (
            <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">Users</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Friends</h1>
 
-            {loadingUsers && <p className="text-gray-600">Loading users...</p>}
+            {loadingUsers && <p className="text-gray-600">Loading friends...</p>}
             {userError && <p className="text-red-600">{userError}</p>}
 
             {!loadingUsers && !userError && users.length === 0 && (
-              <p className="text-gray-600">No users found yet.</p>
+              <p className="text-gray-600">No friends found yet.</p>
             )}
 
             {!loadingUsers && !userError && users.length > 0 && (
-              <div className="grid gap-4">
+              <div className="overflow-y-auto max-h-[60vh] pr-2 grid gap-4">
                 {users.map((user) => (
                   <div
                     key={user.id}

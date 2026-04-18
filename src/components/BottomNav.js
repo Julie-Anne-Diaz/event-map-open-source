@@ -1,14 +1,15 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CalendarDays, MapPin, UserCircle } from "lucide-react";
 
 export default function BottomNav() {
   const pathname = usePathname();
   if (pathname === "/" || pathname === "/login" || pathname === "/register") return null;
   const tabs = [
-    { name: "Events", href: "/events", icon: "🎉" },
-    { name: "Map", href: "/map", icon: "🗺️" },
-    { name: "Profile", href: "/profile", icon: "👤" },
+    { name: "Events", href: "/events", icon: <CalendarDays /> },
+    { name: "Map", href: "/map", icon: <MapPin /> },
+    { name: "Profile", href: "/profile", icon: <UserCircle /> },
   ];
 
   return (
