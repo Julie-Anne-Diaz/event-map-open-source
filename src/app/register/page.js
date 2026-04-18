@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerUser } from "@/lib/api";
- {/*will need to change to handle user name and password check*/}
+
 export default function RegisterUserPage() {
     const [formData, setFormData]= useState({
         email: "",
         password: "",
+        confirmPassword: "",
     });
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -24,8 +25,17 @@ export default function RegisterUserPage() {
         setLoading(true);
         setMessage("");
 
+        if (formData.password !== formData.confirmPassword) {
+            setMessage("Passwords do not match.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const result = await registerUser(formData);
+            const result = await registerUser({
+                email: formData.email,
+                password: formData.password,
+            });
             localStorage.setItem("currentUserId", result.id);
             router.push("/events");
         } catch(error){

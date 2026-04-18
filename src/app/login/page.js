@@ -2,12 +2,10 @@
 
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import { registerUser } from "@/lib/api";
+import { loginUser } from "@/lib/api";
 import Link from "next/link";
 
-export default function LoginPage() { 
-    const [email, setemail] = useState("");
-    const [password, setpassword] = useState("");
+export default function LoginPage() {
     const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -31,11 +29,12 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-        const result = await registerUser(formData);
-        localStorage.setItem("currentUserId", result.id);
+        const result = await loginUser(formData);
+        localStorage.setItem("token", result.access_token);
+        localStorage.setItem("currentUserId", result.user_id);
         router.push("/events");
     } catch (error) {
-        setMessage(`Error: ${error.message || "Failed to register user"}`);
+        setMessage(`Error: ${error.message || "Failed to sign in"}`);
     } finally {
         setLoading(false);
     }

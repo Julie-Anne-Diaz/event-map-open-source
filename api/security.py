@@ -6,13 +6,12 @@ from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 pwd_context = CryptContext(
-    schemes=["bcrypt"],
+    schemes=["pbkdf2_sha256"],
     deprecated="auto"
 )
 
 
 def hash_password(password: str):
-
     return pwd_context.hash(password)
 
 

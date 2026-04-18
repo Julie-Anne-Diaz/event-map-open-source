@@ -7,13 +7,13 @@ from pydantic import BaseModel, EmailStr, Field
 class UserCreate(BaseModel):
 
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=8, max_length=128)
 
 
 class UserLogin(BaseModel):
 
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=8, max_length=128)
 
 
 class Token(BaseModel):
@@ -54,7 +54,6 @@ class FriendshipResponse(BaseModel):
 
 # Event schemas
 class EventBase(BaseModel):
-    creator_user_id: int
     title: str
     description: Optional[str] = None
     visibility: str = "public"

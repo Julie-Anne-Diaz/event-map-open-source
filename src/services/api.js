@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://localhost:8010";
 
 // Login — POST /auth/login
 export async function loginUser(email, password) {
