@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { addFriend } from "@/services/api";  
+import { addFriend } from "@/lib/api";  
 
 export default function AddfriendPage() {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState(""); // "success" or "error"
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -14,16 +15,21 @@ export default function AddfriendPage() {
         e.preventDefault();
         setLoading(true);
         setMessage("");
+        setMessageType("");
 
         try {
             const response = await addFriend(email);
             if (response?.success) {
-                setMessage("Friend request sent successfully!");
+                setMessageType("success");
+                setMessage("Friend request sent successfully! They'll receive a notification via email.");
+                setEmail("");
             } else {
+                setMessageType("error");
                 setMessage("Failed to send friend request.");
             }
         } catch (error) {
-            setMessage("An error occurred. Please try again.");
+            setMessageType("error");
+            setMessage(`Error: ${error.message || "Failed to send friend request"}`);
         } finally {
             setLoading(false);
         }
@@ -36,7 +42,11 @@ export default function AddfriendPage() {
                 <p className="text-gray-500 text-sm mb-6">Enter your friend's email to send a friend request.</p> 
                 <div className="space-y-4">
                     {message && (
-                        <p className={`text-sm ${message.includes("successfully") ? "text-green-500 bg-green-50 border border-green-200" : "text-red-500 bg-red-50 border border-red-200"} rounded-lg px-3 py-2`}>
+                        <p className={`text-sm rounded-lg px-3 py-2 border ${
+                            messageType === "success" 
+                                ? "text-green-700 bg-green-50 border-green-200" 
+                                : "text-red-700 bg-red-50 border-red-200"
+                        }`}>
                             {message}
                         </p>
                     )}
@@ -48,11 +58,12 @@ export default function AddfriendPage() {
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full border p-3 rounded-lg transition-colors outline-none bg-white text-black border-gray-300 placeholder:text-gray-500"
                             placeholder="user@example.com"
+                            required
                         />
                     </div>
                     <button
                         onClick={handleSubmit}
-                        disabled={loading}
+                        disabled={loading || !email}
                         className="w-full bg-black text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {loading ? "Sending..." : "Send Friend Request"}

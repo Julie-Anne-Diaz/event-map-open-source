@@ -74,7 +74,13 @@ export async function loginUser(userData) {
 }
 
 export async function getUsers() {
-  const response = await fetch(`${API_BASE_URL}/users/`);
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/users/`, {
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -85,16 +91,75 @@ export async function getUsers() {
 }
 
 export async function addFriend(friendEmail) {
-  const response = await fetch(`${API_BASE_URL}/friends/`, {
+  const token = localStorage.getItem("token");
+  
+  const response = await fetch(`${API_BASE_URL}/friends/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify({ email: friendEmail }),
   });
+  
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(errorText || "Failed to add friend");
+  }
+
+  return response.json();
+}
+
+export async function getPendingFriendRequests() {
+  const token = localStorage.getItem("token");
+  
+  const response = await fetch(`${API_BASE_URL}/friends/requests`, {
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Failed to fetch friend requests");
+  }
+
+  return response.json();
+}
+
+export async function acceptFriendRequest(requestId) {
+  const token = localStorage.getItem("token");
+  
+  const response = await fetch(`${API_BASE_URL}/friends/requests/${requestId}/accept`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Failed to accept friend request");
+  }
+
+  return response.json();
+}
+
+export async function declineFriendRequest(requestId) {
+  const token = localStorage.getItem("token");
+  
+  const response = await fetch(`${API_BASE_URL}/friends/requests/${requestId}/decline`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Failed to decline friend request");
   }
 
   return response.json();
