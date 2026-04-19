@@ -15,8 +15,7 @@ export default function CreateEventPage() {
     end_time: "",
     capacity: "",
     location_name: "",
-    latitude: "",
-    longitude: "",
+    address: "",
   });
 
   const [message, setMessage] = useState("");
@@ -37,41 +36,80 @@ export default function CreateEventPage() {
     }`;
   }
 
-async function handleSubmit(e) {
-  e.preventDefault();
-  setLoading(true);
-  setMessage("");
+  async function geocodeAddress(address) {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
+        address
+      )}`,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
 
-  const currentUserId = localStorage.getItem("currentUserId");
+    if (!response.ok) {
+      throw new Error("Failed to validate address.");
+    }
 
-  if (!currentUserId) {
-    setMessage("No logged-in user found. Please sign in first.");
-    setLoading(false);
-    return;
-  }
+    const results = await response.json();
 
-  try {
-    const payload = {
-      creator_user_id: Number(currentUserId),
-      title: formData.title,
-      description: formData.description,
-      visibility: formData.visibility,
-      start_time: `${formData.start_time}:00`,
-      end_time: `${formData.end_time}:00`,
-      capacity: formData.capacity ? Number(formData.capacity) : null,
-      location_name: formData.location_name,
-      latitude: Number(formData.latitude),
-      longitude: Number(formData.longitude),
+    if (!results || results.length === 0) {
+      throw new Error("Please enter a valid address.");
+    }
+
+    const firstResult = results[0];
+
+    return {
+      latitude: Number(firstResult.lat),
+      longitude: Number(firstResult.lon),
+      displayName: firstResult.display_name,
     };
-
-    await createEvent(payload);
-    router.push("/events");
-  } catch (error) {
-    setMessage(`Error: ${error.message || "Failed to create event"}`);
-  } finally {
-    setLoading(false);
   }
-}
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    const currentUserId = localStorage.getItem("currentUserId");
+
+    if (!currentUserId) {
+      setMessage("No logged-in user found. Please sign in first.");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.address.trim()) {
+      setMessage("Please enter a valid address.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const geocoded = await geocodeAddress(formData.address);
+
+      const payload = {
+        creator_user_id: Number(currentUserId),
+        title: formData.title,
+        description: formData.description,
+        visibility: formData.visibility,
+        start_time: `${formData.start_time}:00`,
+        end_time: `${formData.end_time}:00`,
+        capacity: formData.capacity ? Number(formData.capacity) : null,
+        location_name: formData.location_name || geocoded.displayName,
+        latitude: geocoded.latitude,
+        longitude: geocoded.longitude,
+      };
+
+      await createEvent(payload);
+      router.push("/events");
+    } catch (error) {
+      setMessage(`Error: ${error.message || "Failed to create event"}`);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-10">
@@ -136,7 +174,7 @@ async function handleSubmit(e) {
 
           <input
             name="location_name"
-            placeholder="Location Name"
+            placeholder="Location Name (example: Reitz Union)"
             value={formData.location_name}
             onChange={handleChange}
             className={inputClass(formData.location_name)}
@@ -144,24 +182,11 @@ async function handleSubmit(e) {
           />
 
           <input
-            type="number"
-            step="any"
-            name="latitude"
-            placeholder="Latitude"
-            value={formData.latitude}
+            name="address"
+            placeholder="Full Address"
+            value={formData.address}
             onChange={handleChange}
-            className={inputClass(formData.latitude)}
-            required
-          />
-
-          <input
-            type="number"
-            step="any"
-            name="longitude"
-            placeholder="Longitude"
-            value={formData.longitude}
-            onChange={handleChange}
-            className={inputClass(formData.longitude)}
+            className={inputClass(formData.address)}
             required
           />
 

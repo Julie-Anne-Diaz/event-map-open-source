@@ -114,8 +114,8 @@ export default function EventsPage() {
                       {new Date(event.end_time).toLocaleString()}
                     </p>
                     <p>
-                      <span className="font-semibold">Coordinates:</span>{" "}
-                      {event.latitude}, {event.longitude}
+                      <span className="font-semibold">Address:</span>{" "}
+                      {event.location_name}
                     </p>
                   </div>
                 </div>
