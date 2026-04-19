@@ -9,7 +9,7 @@ app = FastAPI(title="Event Mapping API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://100.77.194.191:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

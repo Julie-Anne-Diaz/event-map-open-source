@@ -23,6 +23,24 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Running the backend
+
+The frontend expects the API server to run on port `8010`.
+
+From the repo root, start the API with:
+
+```bash
+npm run api:dev
+```
+
+Then in another terminal start the frontend:
+
+```bash
+npm run dev
+```
+
+If you want to override the backend address, set `NEXT_PUBLIC_API_BASE_URL` in a local env file.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

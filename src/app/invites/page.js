@@ -2,17 +2,25 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { getInvites, acceptEventInvite, declineEventInvite } from "@/lib/api";
 
 export default function InvitesPage() {
+  const router = useRouter();
   const [invites, setInvites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
     loadInvites();
-  }, []);
+  }, [router]);
 
   async function loadInvites() {
     setLoading(true);
