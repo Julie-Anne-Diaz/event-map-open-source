@@ -54,7 +54,7 @@ export default function LoginPage() {
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Email/Username"
             value={formData.email}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-lg p-3 text-black placeholder:text-gray-500"
