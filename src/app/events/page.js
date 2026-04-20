@@ -2,15 +2,23 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { getEvents } from "@/lib/api";
 
 export default function EventsPage() {
+  const router = useRouter();
   const [events, setEvents] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [eventError, setEventError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
     async function loadEvents() {
       try {
         const data = await getEvents();
@@ -24,7 +32,7 @@ export default function EventsPage() {
     }
 
     loadEvents();
-  }, []);
+  }, [router]);
 
   async function handleDelete(eventId) {
     if (!confirm("Are you sure you want to delete this event?")) return;

@@ -40,6 +40,7 @@ export default function ProfilePage() {
   }, [router]);
 
   function handleLogout() {
+    localStorage.removeItem("token");
     localStorage.removeItem("currentUserId");
     router.push("/login");
   }

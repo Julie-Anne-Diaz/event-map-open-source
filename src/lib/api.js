@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8010";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8010";
 
 export async function createEvent(eventData) {
   const token = localStorage.getItem("token");
@@ -184,7 +184,12 @@ export async function getUser(userId) {
 }
 
 export async function getUserEvents(userId) {
-  const response = await fetch(`${API_BASE_URL}/events/?creator_user_id=${userId}`);
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_BASE_URL}/events/?creator_user_id=${userId}`, {
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(errorText || "Failed to fetch user events");

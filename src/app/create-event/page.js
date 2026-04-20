@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createEvent } from "@/lib/api";
 
@@ -20,6 +20,14 @@ export default function CreateEventPage() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+  }, [router]);
 
   function handleChange(e) {
     setFormData({

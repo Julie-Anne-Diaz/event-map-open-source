@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { getFriends, getPendingFriendRequests, acceptFriendRequest, declineFriendRequest, getUser } from "@/lib/api";
 
 export default function Friends() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("friends");
   const [friends, setFriends] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -14,8 +16,14 @@ export default function Friends() {
   const [requestSenderMap, setRequestSenderMap] = useState({});
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
     loadData();
-  }, []);
+  }, [router]);
 
   async function loadData() {
     const currentUserId = localStorage.getItem("currentUserId");

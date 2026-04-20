@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { addFriend } from "@/lib/api";  
 
@@ -10,6 +10,14 @@ export default function AddfriendPage() {
     const [messageType, setMessageType] = useState(""); // "success" or "error"
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            router.push("/login");
+            return;
+        }
+    }, [router]);
 
     async function handleSubmit(e) {
         e.preventDefault();

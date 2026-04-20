@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8010";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8010";
 
 // Login — POST /auth/login
 export async function loginUser(email, password) {
