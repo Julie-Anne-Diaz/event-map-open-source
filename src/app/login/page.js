@@ -29,10 +29,15 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-        const result = await loginUser(formData);
-        localStorage.setItem("token", result.access_token);
-        localStorage.setItem("currentUserId", result.user_id);
-        router.push("/events");
+      const result = await loginUser(formData);
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("currentUserId");
+
+      localStorage.setItem("token", result.access_token);
+      localStorage.setItem("currentUserId", String(result.user_id));
+
+      router.push("/events");
     } catch (error) {
         setMessage(`Error: ${error.message || "Failed to sign in"}`);
     } finally {

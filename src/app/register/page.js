@@ -36,8 +36,9 @@ export default function RegisterUserPage() {
                 email: formData.email,
                 password: formData.password,
             });
-            localStorage.setItem("currentUserId", result.id);
-            router.push("/events");
+            localStorage.removeItem("token");
+            localStorage.removeItem("currentUserId");
+            router.push("/login");
         } catch(error){
             setMessage(`Error: ${error.message || "Failed to register user"}`);
         } finally {
