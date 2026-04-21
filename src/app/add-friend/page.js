@@ -29,7 +29,7 @@ export default function AddfriendPage() {
             const response = await addFriend(email);
             if (response?.success) {
                 setMessageType("success");
-                setMessage("Friend request sent successfully! They'll receive a notification via email.");
+                setMessage("Friend Request Successfully Sent");
                 setEmail("");
             } else {
                 setMessageType("error");
