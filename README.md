@@ -45,6 +45,14 @@ Then run the server:
 python -m uvicorn main:app --reload --port 8010
 ```
 
+### Seed Sample Data
+
+To populate the database with 100 sample users and 100 sample events, run:
+
+```bash
+python seed_data.py
+```
+
 API docs available at [http://localhost:8010/docs](http://localhost:8010/docs)
 
 ## Project Structure
