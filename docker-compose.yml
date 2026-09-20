@@ -1,0 +1,61 @@
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: event-map-db
+
+    environment:
+      POSTGRES_DB: event_map
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d event_map"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  api:
+    build:
+      context: ./api
+
+    container_name: event-map-api
+
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/event_map
+      SECRET_KEY: local-development-secret-key-change-me
+
+    ports:
+      - "8010:8010"
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8010
+
+    container_name: event-map-frontend
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - api
+
+
+volumes:
+  postgres_data:
