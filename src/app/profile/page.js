@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getUser, getUserEvents, getFriends } from "@/lib/api";
+import { CalendarDays, LogOut, Users } from "lucide-react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -56,99 +57,76 @@ export default function ProfilePage() {
   }
 
   if (loading) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-500">Loading profile...</p>
-      </main>
-    );
+    return <main className="flex min-h-screen items-center justify-center text-slate-500">Loading profile...</main>;
   }
 
   if (error) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-red-500">{error}</p>
-      </main>
-    );
+    return <main className="flex min-h-screen items-center justify-center text-red-300">{error}</main>;
   }
 
   return (
-    <main className="min-h-screen flex flex-col bg-gray-50 px-4 pb-20">
-      <div className="w-full max-w-3xl mx-auto py-12">
-
-        {/* Profile Header */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-
-            {/* Left - avatar and name */}
+    <main className="min-h-screen px-4 pb-32 pt-8">
+      <div className="mx-auto w-full max-w-4xl">
+        <div className="dark-panel relative overflow-hidden rounded-[2rem] p-6 shadow-[0_20px_70px_rgba(0,0,0,0.28)] animate-enter sm:p-8">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-violet-600/15 blur-3xl" />
+          <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-xl font-semibold text-gray-600">
+              <div className="grid h-20 w-20 place-items-center rounded-3xl bg-gradient-to-br from-violet-500 to-cyan-400 text-3xl font-black text-white shadow-xl shadow-violet-950/30">
                 {formatUsername(user?.email)?.[0]?.toUpperCase()}
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">
-                  {formatUsername(user?.email)}
-                </h1>
-                <p className="text-gray-500 text-sm">{user?.email}</p>
+                <p className="text-xs font-black uppercase tracking-[0.16em] text-violet-300">Your profile</p>
+                <h1 className="mt-1 text-3xl font-black text-white">{formatUsername(user?.email)}</h1>
+                <p className="mt-1 text-sm text-slate-500">{user?.email}</p>
               </div>
             </div>
 
-            {/* Right - stats */}
-            <div className="flex gap-8">
-              <div className="text-center">
-                <p className="text-xl font-bold text-gray-900">{friends.length}</p>
-                <p className="text-xs text-gray-500">Friends</p>
+            <div className="flex gap-3">
+              <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-5 py-3 text-center">
+                <Users size={17} className="mx-auto mb-1 text-cyan-300" />
+                <p className="text-xl font-black text-white">{friends.length}</p>
+                <p className="text-xs text-slate-500">Friends</p>
               </div>
-              <div className="text-center">
-                <p className="text-xl font-bold text-gray-900">{events.length}</p>
-                <p className="text-xs text-gray-500">Events</p>
+              <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] px-5 py-3 text-center">
+                <CalendarDays size={17} className="mx-auto mb-1 text-violet-300" />
+                <p className="text-xl font-black text-white">{events.length}</p>
+                <p className="text-xs text-slate-500">Events</p>
               </div>
             </div>
-
           </div>
 
-          {/* Logout */}
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <button
-              onClick={handleLogout}
-              className="text-sm text-gray-500 hover:text-red-500 transition-colors"
-            >
-              Log out
-            </button>
-          </div>
+          <button onClick={handleLogout} className="relative mt-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-red-300">
+            <LogOut size={15} />
+            Log out
+          </button>
         </div>
 
-        {/* Your Events */}
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Your Events</h2>
+        <div className="mt-8">
+          <h2 className="text-xl font-black text-white">Your events</h2>
+          <p className="mt-1 text-sm text-slate-500">Everything you've put on the map.</p>
 
-        {events.length === 0 ? (
-          <p className="text-gray-500 text-sm">You haven't created any events yet.</p>
-        ) : (
-          <ul className="space-y-4">
-            {events.map((event) => (
-              <li
-                key={event.id}
-                className="bg-white border border-gray-200 rounded-xl p-4"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900">{event.title}</h3>
-                    <p className="text-gray-500 text-sm mt-0.5">{event.location_name}</p>
-                    <p className="text-gray-400 text-xs mt-1">
-                      {formatEventTime(event.start_time, event.end_time)}
-                    </p>
-                    {event.description && (
-                      <p className="text-gray-600 text-sm mt-2">{event.description}</p>
-                    )}
+          {events.length === 0 ? (
+            <div className="glass mt-5 rounded-3xl p-8 text-center text-sm text-slate-500">You haven't created any events yet.</div>
+          ) : (
+            <ul className="mt-5 grid gap-4 md:grid-cols-2">
+              {events.map((event) => (
+                <li key={event.id} className="card-lift dark-panel rounded-3xl p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-base font-bold text-white">{event.title}</h3>
+                      <p className="mt-1 text-sm text-slate-400">{event.location_name}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full border border-violet-400/15 bg-violet-400/10 px-2.5 py-1 text-xs font-bold capitalize text-violet-300">
+                      {event.visibility.replace("_", " ")}
+                    </span>
                   </div>
-                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full shrink-0">
-                    {event.visibility}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-
+                  <p className="mt-4 text-xs font-medium text-slate-500">{formatEventTime(event.start_time, event.end_time)}</p>
+                  {event.description && <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-400">{event.description}</p>}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </main>
   );
