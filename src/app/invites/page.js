@@ -26,8 +26,7 @@ export default function InvitesPage() {
     setLoading(true);
     setError("");
     try {
-      const data = await getInvites();
-      setInvites(data);
+      setInvites(await getInvites());
     } catch {
       setError("Failed to load invites.");
     } finally {
@@ -58,43 +57,36 @@ export default function InvitesPage() {
   }
 
   return (
-    <main className="min-h-screen px-4 pb-32 pt-8">
+    <main className="min-h-screen bg-[#f7f7f8] px-4 pb-32 pt-9">
       <div className="mx-auto w-full max-w-4xl">
-        <div className="mb-7 inline-flex rounded-2xl border border-white/10 bg-white/[0.04] p-1.5">
-          <Link href="/events" className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-500 transition hover:bg-white/[0.06] hover:text-white">Events</Link>
-          <Link href="/friends" className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-500 transition hover:bg-white/[0.06] hover:text-white">Friends</Link>
-          <span className="rounded-xl bg-violet-500 px-4 py-2 text-sm font-semibold text-white">Invites</span>
+        <div className="mb-7 inline-flex rounded-xl border border-zinc-200 bg-white p-1">
+          <Link href="/events" className="rounded-lg px-4 py-2 text-sm font-semibold text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900">Events</Link>
+          <Link href="/friends" className="rounded-lg px-4 py-2 text-sm font-semibold text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900">Friends</Link>
+          <span className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-semibold text-white">Invites</span>
         </div>
 
-        <div className="mb-7 animate-enter">
-          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-violet-300">
-            <MailOpen size={16} />
-            Plans waiting on you
-          </div>
-          <h1 className="text-4xl font-black tracking-tight text-white">Event invites</h1>
-          <p className="mt-2 text-slate-400">Accept the plans that sound good. Ignore the rest.</p>
+        <div className="mb-7">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-violet-700"><MailOpen size={16} /> vidamobile invites</div>
+          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900">Plans waiting on you</h1>
+          <p className="mt-2 text-zinc-500">Accept the ones that sound good. Pass on the rest.</p>
         </div>
 
-        {successMessage && <p className="mb-4 rounded-xl border border-emerald-400/15 bg-emerald-400/10 p-3 text-sm text-emerald-300">{successMessage}</p>}
-        {error && <p className="mb-4 rounded-xl border border-red-400/15 bg-red-400/10 p-3 text-sm text-red-300">{error}</p>}
+        {successMessage && <p className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{successMessage}</p>}
+        {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+        {loading && <p className="text-sm text-zinc-500">Loading invites...</p>}
 
-        {loading && <p className="text-sm text-slate-500">Loading invites...</p>}
-
-        {!loading && invites.length === 0 && (
-          <div className="glass rounded-3xl p-9 text-center text-slate-500">No event invites right now.</div>
-        )}
+        {!loading && invites.length === 0 && <div className="rounded-2xl border border-zinc-200 bg-white p-9 text-center text-zinc-500">No event invites right now.</div>}
 
         {!loading && invites.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2">
             {invites.map((invite) => (
-              <article key={invite.id} className="card-lift dark-panel rounded-3xl p-6">
-                <span className="rounded-full border border-violet-400/15 bg-violet-400/10 px-2.5 py-1 text-xs font-bold text-violet-300">{invite.status}</span>
-                <h2 className="mt-4 text-xl font-bold text-white">{invite.event_title}</h2>
-                <p className="mt-2 text-sm text-slate-400">Invited by {invite.creator_email}</p>
-
+              <article key={invite.id} className="card-lift rounded-2xl border border-zinc-200 bg-white p-6">
+                <span className="rounded-full bg-violet-100 px-2.5 py-1 text-xs font-bold text-violet-700">{invite.status}</span>
+                <h2 className="mt-4 text-xl font-bold text-zinc-900">{invite.event_title}</h2>
+                <p className="mt-2 text-sm text-zinc-500">Invited by {invite.creator_email}</p>
                 <div className="mt-6 flex gap-2">
-                  <button onClick={() => handleAccept(invite.id)} className="flex-1 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-emerald-300">Accept</button>
-                  <button onClick={() => handleDecline(invite.id)} className="flex-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-slate-300 transition hover:border-red-400/20 hover:bg-red-400/10 hover:text-red-300">Decline</button>
+                  <button onClick={() => handleAccept(invite.id)} className="flex-1 rounded-lg bg-[#242424] px-4 py-2.5 text-sm font-bold text-white hover:bg-black">Accept</button>
+                  <button onClick={() => handleDecline(invite.id)} className="flex-1 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-bold text-zinc-700 hover:bg-zinc-100">Decline</button>
                 </div>
               </article>
             ))}
