@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getInvites, acceptEventInvite, declineEventInvite } from "@/lib/api";
+import { MailOpen } from "lucide-react";
 
 export default function InvitesPage() {
   const router = useRouter();
@@ -18,7 +19,6 @@ export default function InvitesPage() {
       router.push("/login");
       return;
     }
-
     loadInvites();
   }, [router]);
 
@@ -28,7 +28,7 @@ export default function InvitesPage() {
     try {
       const data = await getInvites();
       setInvites(data);
-    } catch (err) {
+    } catch {
       setError("Failed to load invites.");
     } finally {
       setLoading(false);
@@ -58,80 +58,48 @@ export default function InvitesPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col bg-gray-50 px-4">
-      <div className="w-full max-w-3xl mx-auto py-12">
-        <div className="flex justify-between mb-6">
-          <div className="flex bg-gray-200 rounded-lg p-1">
-            <Link
-              href="/events"
-              className="px-3 py-1 rounded-lg text-xs font-medium text-gray-500 transition-colors hover:bg-white hover:text-gray-900"
-            >
-              Events
-            </Link>
-            <Link
-              href="/friends"
-              className="px-3 py-1 rounded-lg text-xs font-medium text-gray-500 transition-colors hover:bg-white hover:text-gray-900"
-            >
-              Friends
-            </Link>
-            <button className="px-3 py-1 rounded-lg text-xs font-medium bg-black text-white shadow-sm">
-              Invites
-            </button>
+    <main className="min-h-screen px-4 pb-32 pt-8">
+      <div className="mx-auto w-full max-w-4xl">
+        <div className="mb-7 inline-flex rounded-2xl border border-white/10 bg-white/[0.04] p-1.5">
+          <Link href="/events" className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-500 transition hover:bg-white/[0.06] hover:text-white">Events</Link>
+          <Link href="/friends" className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-500 transition hover:bg-white/[0.06] hover:text-white">Friends</Link>
+          <span className="rounded-xl bg-violet-500 px-4 py-2 text-sm font-semibold text-white">Invites</span>
+        </div>
+
+        <div className="mb-7 animate-enter">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-violet-300">
+            <MailOpen size={16} />
+            Plans waiting on you
           </div>
+          <h1 className="text-4xl font-black tracking-tight text-white">Event invites</h1>
+          <p className="mt-2 text-slate-400">Accept the plans that sound good. Ignore the rest.</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Event Invites</h1>
+        {successMessage && <p className="mb-4 rounded-xl border border-emerald-400/15 bg-emerald-400/10 p-3 text-sm text-emerald-300">{successMessage}</p>}
+        {error && <p className="mb-4 rounded-xl border border-red-400/15 bg-red-400/10 p-3 text-sm text-red-300">{error}</p>}
 
-          {successMessage && (
-            <p className="mb-4 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg p-3">
-              {successMessage}
-            </p>
-          )}
+        {loading && <p className="text-sm text-slate-500">Loading invites...</p>}
 
-          {error && (
-            <p className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3">
-              {error}
-            </p>
-          )}
+        {!loading && invites.length === 0 && (
+          <div className="glass rounded-3xl p-9 text-center text-slate-500">No event invites right now.</div>
+        )}
 
-          {loading && <p className="text-gray-600">Loading invites...</p>}
+        {!loading && invites.length > 0 && (
+          <div className="grid gap-4 md:grid-cols-2">
+            {invites.map((invite) => (
+              <article key={invite.id} className="card-lift dark-panel rounded-3xl p-6">
+                <span className="rounded-full border border-violet-400/15 bg-violet-400/10 px-2.5 py-1 text-xs font-bold text-violet-300">{invite.status}</span>
+                <h2 className="mt-4 text-xl font-bold text-white">{invite.event_title}</h2>
+                <p className="mt-2 text-sm text-slate-400">Invited by {invite.creator_email}</p>
 
-          {!loading && invites.length === 0 && (
-            <p className="text-gray-600">No event invites received.</p>
-          )}
-
-          {!loading && invites.length > 0 && (
-            <div className="grid gap-4">
-              {invites.map((invite) => (
-                <div key={invite.id} className="bg-gray-50 rounded-xl border border-gray-200 p-5">
-                  <div className="flex flex-col gap-3">
-                    <div>
-                      <h2 className="text-xl font-semibold text-gray-900">{invite.event_title}</h2>
-                      <p className="text-sm text-gray-600">From: {invite.creator_email}</p>
-                      <p className="text-sm text-gray-600">Event ID: {invite.event_id}</p>
-                      <p className="text-sm text-gray-600">Status: {invite.status}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleAccept(invite.id)}
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition-colors"
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() => handleDecline(invite.id)}
-                        className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors"
-                      >
-                        Decline
-                      </button>
-                    </div>
-                  </div>
+                <div className="mt-6 flex gap-2">
+                  <button onClick={() => handleAccept(invite.id)} className="flex-1 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-emerald-300">Accept</button>
+                  <button onClick={() => handleDecline(invite.id)} className="flex-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-slate-300 transition hover:border-red-400/20 hover:bg-red-400/10 hover:text-red-300">Decline</button>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );
