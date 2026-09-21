@@ -3,26 +3,20 @@ import { MapPinned } from "lucide-react";
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 px-4 pt-4">
-      <div className="glass mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-5 py-3 shadow-[0_18px_60px_rgba(0,0,0,0.24)]">
-        <Link href="/" className="group flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 text-white shadow-lg shadow-violet-950/40 transition-transform group-hover:rotate-6">
-            <MapPinned size={19} />
+    <nav className="w-full bg-[#242424] px-4 py-3 text-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-white/10">
+            <MapPinned size={18} />
           </span>
-          <span className="text-xl font-black tracking-tight text-white">Loop</span>
+          <span className="text-xl font-extrabold tracking-tight">vidamobile</span>
         </Link>
 
-        <div className="flex items-center gap-2">
-          <Link
-            href="/login"
-            className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
-          >
+        <div className="flex items-center gap-1">
+          <Link href="/login" className="rounded-lg px-4 py-2 text-sm font-semibold text-white/85 transition hover:bg-white/10 hover:text-white">
             Sign in
           </Link>
-          <Link
-            href="/register"
-            className="rounded-xl bg-white px-4 py-2 text-sm font-bold text-slate-950 shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-violet-400"
-          >
+          <Link href="/register" className="rounded-lg bg-white px-4 py-2 text-sm font-bold text-[#242424] transition hover:bg-zinc-100">
             Create account
           </Link>
         </div>
