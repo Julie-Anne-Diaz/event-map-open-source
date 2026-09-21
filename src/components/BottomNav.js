@@ -16,22 +16,19 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-4 left-0 right-0 z-50 px-4">
-      <nav className="glass mx-auto flex max-w-md items-center justify-around rounded-2xl p-2 shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
+      <nav className="mx-auto flex max-w-md items-center justify-around rounded-2xl border border-zinc-200 bg-white p-2 shadow-[0_14px_40px_rgba(24,24,27,0.14)]">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = pathname === tab.href;
-
           return (
             <Link
               key={tab.href}
               href={tab.href}
-              className={`relative flex min-w-24 flex-col items-center gap-1 rounded-xl px-5 py-2 transition-all duration-200 ${
-                active
-                  ? "bg-gradient-to-br from-violet-500 to-indigo-500 text-white shadow-lg shadow-violet-950/40"
-                  : "text-slate-500 hover:bg-white/[0.06] hover:text-slate-200"
+              className={`flex min-w-24 flex-col items-center gap-1 rounded-xl px-5 py-2 transition ${
+                active ? "bg-[#242424] text-white" : "text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800"
               }`}
             >
-              <Icon size={20} strokeWidth={active ? 2.4 : 2} />
+              <Icon size={19} strokeWidth={active ? 2.4 : 2} />
               <span className="text-[11px] font-semibold">{tab.name}</span>
             </Link>
           );
