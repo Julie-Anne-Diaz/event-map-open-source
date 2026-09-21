@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createEvent } from "@/lib/api";
+import { ArrowLeft, CalendarPlus, MapPin } from "lucide-react";
 
 export default function CreateEventPage() {
   const router = useRouter();
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,61 +17,32 @@ export default function CreateEventPage() {
     location_name: "",
     address: "",
   });
-
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
+    if (!token) router.push("/login");
   }, [router]);
 
   function handleChange(e) {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  function inputClass(value) {
-    return `w-full border p-3 rounded-lg transition-colors outline-none ${
-      value
-        ? "bg-gray-900 text-white border-gray-900"
-        : "bg-white text-black border-gray-300 placeholder:text-gray-500"
-    }`;
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   async function geocodeAddress(address) {
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
-        address
-      )}`,
-      {
-        headers: {
-          Accept: "application/json",
-        },
-      }
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`,
+      { headers: { Accept: "application/json" } }
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to validate address.");
-    }
-
+    if (!response.ok) throw new Error("Failed to validate address.");
     const results = await response.json();
-
-    if (!results || results.length === 0) {
-      throw new Error("Please enter a valid address.");
-    }
-
-    const firstResult = results[0];
+    if (!results || results.length === 0) throw new Error("Please enter a valid address.");
 
     return {
-      latitude: Number(firstResult.lat),
-      longitude: Number(firstResult.lon),
-      displayName: firstResult.display_name,
+      latitude: Number(results[0].lat),
+      longitude: Number(results[0].lon),
+      displayName: results[0].display_name,
     };
   }
 
@@ -81,7 +52,6 @@ export default function CreateEventPage() {
     setMessage("");
 
     const currentUserId = localStorage.getItem("currentUserId");
-
     if (!currentUserId) {
       setMessage("No logged-in user found. Please sign in first.");
       setLoading(false);
@@ -96,7 +66,6 @@ export default function CreateEventPage() {
 
     try {
       const geocoded = await geocodeAddress(formData.address);
-
       const payload = {
         creator_user_id: Number(currentUserId),
         title: formData.title,
@@ -120,94 +89,80 @@ export default function CreateEventPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Create Event</h1>
+    <main className="min-h-screen px-4 pb-32 pt-8">
+      <div className="mx-auto max-w-3xl">
+        <button onClick={() => router.back()} className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-white">
+          <ArrowLeft size={16} />
+          Back
+        </button>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            name="title"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleChange}
-            className={inputClass(formData.title)}
-            required
-          />
+        <div className="mb-7 animate-enter">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-violet-300">
+            <CalendarPlus size={16} />
+            Add something worth showing up for
+          </div>
+          <h1 className="text-4xl font-black tracking-tight text-white">Create an event</h1>
+          <p className="mt-2 text-slate-400">Give people the details. Loop will put it on the map.</p>
+        </div>
 
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={formData.description}
-            onChange={handleChange}
-            className={inputClass(formData.description)}
-          />
+        <form onSubmit={handleSubmit} className="dark-panel rounded-[2rem] p-6 shadow-[0_20px_70px_rgba(0,0,0,0.25)] sm:p-8">
+          <div className="grid gap-6">
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-300">Event title</label>
+              <input name="title" placeholder="Friday rooftop meetup" value={formData.title} onChange={handleChange} className="field-dark" required />
+            </div>
 
-          <select
-            name="visibility"
-            value={formData.visibility}
-            onChange={handleChange}
-            className={inputClass(formData.visibility)}
-          >
-            <option value="public">Public</option>
-            <option value="invite_only">Invite Only</option>
-            <option value="private">Private</option>
-          </select>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-300">Description</label>
+              <textarea name="description" placeholder="What should people know?" value={formData.description} onChange={handleChange} className="field-dark min-h-28 resize-y" />
+            </div>
 
-          <input
-            type="datetime-local"
-            name="start_time"
-            value={formData.start_time}
-            onChange={handleChange}
-            className={inputClass(formData.start_time)}
-            required
-          />
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-300">Visibility</label>
+                <select name="visibility" value={formData.visibility} onChange={handleChange} className="field-dark">
+                  <option value="public">Public</option>
+                  <option value="invite_only">Invite Only</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-300">Capacity</label>
+                <input type="number" name="capacity" placeholder="Optional" value={formData.capacity} onChange={handleChange} className="field-dark" />
+              </div>
+            </div>
 
-          <input
-            type="datetime-local"
-            name="end_time"
-            value={formData.end_time}
-            onChange={handleChange}
-            className={inputClass(formData.end_time)}
-            required
-          />
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-300">Starts</label>
+                <input type="datetime-local" name="start_time" value={formData.start_time} onChange={handleChange} className="field-dark [color-scheme:dark]" required />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-300">Ends</label>
+                <input type="datetime-local" name="end_time" value={formData.end_time} onChange={handleChange} className="field-dark [color-scheme:dark]" required />
+              </div>
+            </div>
 
-          <input
-            type="number"
-            name="capacity"
-            placeholder="Capacity"
-            value={formData.capacity}
-            onChange={handleChange}
-            className={inputClass(formData.capacity)}
-          />
+            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5">
+              <div className="mb-4 flex items-center gap-2 text-sm font-bold text-slate-200">
+                <MapPin size={17} className="text-cyan-300" />
+                Location
+              </div>
+              <div className="grid gap-4">
+                <input name="location_name" placeholder="Venue name — e.g. Reitz Union" value={formData.location_name} onChange={handleChange} className="field-dark" required />
+                <input name="address" placeholder="Full street address" value={formData.address} onChange={handleChange} className="field-dark" required />
+              </div>
+            </div>
 
-          <input
-            name="location_name"
-            placeholder="Location Name (example: Reitz Union)"
-            value={formData.location_name}
-            onChange={handleChange}
-            className={inputClass(formData.location_name)}
-            required
-          />
+            {message && (
+              <p className="rounded-xl border border-red-400/15 bg-red-400/10 px-3 py-2 text-sm text-red-300">{message}</p>
+            )}
 
-          <input
-            name="address"
-            placeholder="Full Address"
-            value={formData.address}
-            onChange={handleChange}
-            className={inputClass(formData.address)}
-            required
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            {loading ? "Creating..." : "Create Event"}
-          </button>
+            <button type="submit" disabled={loading} className="rounded-2xl bg-white px-6 py-3.5 font-bold text-slate-950 transition hover:bg-violet-300 disabled:cursor-not-allowed disabled:opacity-50">
+              {loading ? "Creating..." : "Create event"}
+            </button>
+          </div>
         </form>
-
-        {message && <p className="mt-4 text-sm text-gray-700">{message}</p>}
       </div>
     </main>
   );
