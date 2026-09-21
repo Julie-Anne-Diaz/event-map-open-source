@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarDays, MapPin, UserCircle } from "lucide-react";
@@ -6,30 +7,36 @@ import { CalendarDays, MapPin, UserCircle } from "lucide-react";
 export default function BottomNav() {
   const pathname = usePathname();
   if (pathname === "/" || pathname === "/login" || pathname === "/register") return null;
+
   const tabs = [
-    { name: "Events", href: "/events", icon: <CalendarDays /> },
-    { name: "Map", href: "/map", icon: <MapPin /> },
-    { name: "Profile", href: "/profile", icon: <UserCircle /> },
+    { name: "Events", href: "/events", icon: CalendarDays },
+    { name: "Map", href: "/map", icon: MapPin },
+    { name: "Profile", href: "/profile", icon: UserCircle },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-50">
-      <div className="flex justify-around max-w-3xl mx-auto">
-        {tabs.map((tab) => (
-          <Link
-            key={tab.href}
-            href={tab.href}
-            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-colors ${
-              pathname === tab.href
-                ? "text-black font-medium"
-                : "text-gray-400"
-            }`}
-          >
-            <span className="text-xl">{tab.icon}</span>
-            <span className="text-xs">{tab.name}</span>
-          </Link>
-        ))}
-      </div>
-    </nav>
+    <div className="fixed bottom-4 left-0 right-0 z-50 px-4">
+      <nav className="glass mx-auto flex max-w-md items-center justify-around rounded-2xl p-2 shadow-[0_18px_60px_rgba(17,24,39,0.18)]">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const active = pathname === tab.href;
+
+          return (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className={`relative flex min-w-24 flex-col items-center gap-1 rounded-xl px-5 py-2 transition-all duration-200 ${
+                active
+                  ? "bg-[#5b5ce2] text-white shadow-lg shadow-indigo-200"
+                  : "text-gray-400 hover:bg-white/80 hover:text-gray-800"
+              }`}
+            >
+              <Icon size={20} strokeWidth={active ? 2.4 : 2} />
+              <span className="text-[11px] font-semibold">{tab.name}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
   );
 }
