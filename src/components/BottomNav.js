@@ -16,7 +16,7 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-4 left-0 right-0 z-50 px-4">
-      <nav className="glass mx-auto flex max-w-md items-center justify-around rounded-2xl p-2 shadow-[0_18px_60px_rgba(17,24,39,0.18)]">
+      <nav className="glass mx-auto flex max-w-md items-center justify-around rounded-2xl p-2 shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = pathname === tab.href;
@@ -27,8 +27,8 @@ export default function BottomNav() {
               href={tab.href}
               className={`relative flex min-w-24 flex-col items-center gap-1 rounded-xl px-5 py-2 transition-all duration-200 ${
                 active
-                  ? "bg-[#5b5ce2] text-white shadow-lg shadow-indigo-200"
-                  : "text-gray-400 hover:bg-white/80 hover:text-gray-800"
+                  ? "bg-gradient-to-br from-violet-500 to-indigo-500 text-white shadow-lg shadow-violet-950/40"
+                  : "text-slate-500 hover:bg-white/[0.06] hover:text-slate-200"
               }`}
             >
               <Icon size={20} strokeWidth={active ? 2.4 : 2} />
