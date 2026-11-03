@@ -83,7 +83,7 @@ export default function CreateEventPage() {
         <div className="mb-7">
           <div className="mb-2 flex items-center gap-2 text-sm font-bold text-violet-700"><CalendarPlus size={16} /> Create on vidamobile</div>
           <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900">Create an event</h1>
-          <p className="mt-2 text-zinc-500">Add the details. We'll handle the pin.</p>
+          <p className="mt-2 text-zinc-500">Add the details. We&apos;ll handle the pin.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8">
