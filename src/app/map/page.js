@@ -255,8 +255,8 @@ export default function MapPage() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-7">
           <div className="mb-2 flex items-center gap-2 text-sm font-bold text-violet-700"><MapPinned size={16} /> vidamobile map</div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900">See what's nearby</h1>
-          <p className="mt-2 text-zinc-500">Pins are plans. Click one and see if it's worth the trip.</p>
+          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900">See what&apos;s nearby</h1>
+          <p className="mt-2 text-zinc-500">Pins are plans. Click one and see if it&apos;s worth the trip.</p>
         </div>
 
         <div className="mb-5 flex flex-col gap-3 md:flex-row">
