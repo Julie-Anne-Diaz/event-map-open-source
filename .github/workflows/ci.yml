@@ -40,7 +40,35 @@ jobs:
           NEXT_PUBLIC_API_BASE_URL: /api
         run: npm run build
 
+  terraform:
+    name: Terraform checks
+    runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: infra
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.17.1"
+
+      - name: Terraform init
+        run: terraform init -input=false
+
+      - name: Terraform format check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform architecture tests
+        run: terraform test
+        
   backend:
     name: Backend checks
     runs-on: ubuntu-latest
