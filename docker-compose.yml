@@ -18,6 +18,16 @@ services:
       timeout: 5s
       retries: 10
 
+  registry:
+    image: registry:2
+
+    container_name: vidamobile-registry
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - registry_data:/var/lib/registry
 
   api:
     build:
@@ -87,3 +97,4 @@ services:
 
 volumes:
   postgres_data:
+  registry_data:
