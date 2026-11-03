@@ -2,15 +2,12 @@ services:
 
   db:
     image: postgres:16-alpine
-    container_name: event-map-db
+    container_name: vidamobile-db
 
     environment:
       POSTGRES_DB: event_map
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
-    ports:
-      - "5432:5432"
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -26,14 +23,14 @@ services:
     build:
       context: ./api
 
-    container_name: event-map-api
+    container_name: vidamobile-api
 
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/event_map
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/event_map
       SECRET_KEY: local-development-secret-key-change-me
 
-    ports:
-      - "8010:8010"
+    expose:
+      - "8010"
 
     depends_on:
       db:
@@ -46,14 +43,30 @@ services:
       dockerfile: Dockerfile.frontend
 
       args:
-        NEXT_PUBLIC_API_BASE_URL: http://localhost:8010
+        NEXT_PUBLIC_API_BASE_URL: /api
 
-    container_name: event-map-frontend
+    container_name: vidamobile-frontend
 
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
 
     depends_on:
+      - api
+
+
+  proxy:
+    image: nginx:alpine
+
+    container_name: vidamobile-proxy
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+    depends_on:
+      - frontend
       - api
 
 
