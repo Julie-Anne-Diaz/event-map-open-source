@@ -47,3 +47,14 @@ __pycache__/
 api/__pycache__/
 api/routers/__pycache__/
 *.pyc
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfplan
+crash.log
+
+# Keep the provider lock file
+!.terraform.lock.hcl
