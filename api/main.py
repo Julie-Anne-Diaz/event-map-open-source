@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import socket
 
 from routers import auth, events, users, friends, invites
 from database import Base, engine
@@ -34,5 +35,6 @@ def root():
 def health():
     return {
         "status": "healthy",
-        "service": "vidamobile-api"
+        "service": "vidamobile-api",
+        "instance": socket.gethostname()
     }
