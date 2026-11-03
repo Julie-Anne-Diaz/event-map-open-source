@@ -49,7 +49,7 @@ export default function AddfriendPage() {
 
         <form onSubmit={handleSubmit} className="mt-7 space-y-5">
           {message && <p className={`rounded-xl border px-3 py-2 text-sm ${messageType === "success" ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-red-200 bg-red-50 text-red-700"}`}>{message}</p>}
-          <div><label className="mb-2 block text-sm font-semibold text-zinc-700">Friend's email</label><input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="field-dark" placeholder="friend@example.com" required /></div>
+          <div><label className="mb-2 block text-sm font-semibold text-zinc-700">Friend&apos;s email</label><input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="field-dark" placeholder="friend@example.com" required /></div>
           <button type="submit" disabled={loading || !email} className="w-full rounded-xl bg-[#242424] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-black disabled:opacity-50">{loading ? "Sending..." : "Send friend request"}</button>
         </form>
       </div>
