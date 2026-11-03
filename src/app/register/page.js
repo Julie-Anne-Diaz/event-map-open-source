@@ -45,7 +45,7 @@ export default function RegisterUserPage() {
         <div className="hidden bg-[linear-gradient(145deg,#b6a3e7,#6d4bc8_52%,#38237d)] p-10 text-white md:flex md:flex-col md:justify-between">
           <Link href="/" className="flex items-center gap-2.5 font-extrabold"><MapPinned size={20} /> vidamobile</Link>
           <div>
-            <p className="text-3xl font-extrabold tracking-tight">A better way to see what's going on.</p>
+            <p className="text-3xl font-extrabold tracking-tight">A better way to see what&apos;s going on.</p>
             <p className="mt-3 text-sm leading-6 text-white/80">Create an account and start finding events around you.</p>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function RegisterUserPage() {
 
           <p className="text-sm font-bold text-violet-700">Join vidamobile</p>
           <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-zinc-900">Create your account</h1>
-          <p className="mt-2 text-sm text-zinc-500">You'll be on the map in a minute.</p>
+          <p className="mt-2 text-sm text-zinc-500">You&apos;ll be on the map in a minute.</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>

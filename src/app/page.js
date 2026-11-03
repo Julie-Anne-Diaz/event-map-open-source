@@ -35,7 +35,7 @@ export default function Home() {
           <div className="mx-auto mt-14 max-w-6xl">
             <div className="mb-7 max-w-2xl">
               <h2 className="text-3xl font-extrabold tracking-tight text-zinc-900">Everything happening, minus the clutter.</h2>
-              <p className="mt-3 leading-7 text-zinc-500">A simple way to find a plan, invite someone, or see what's close.</p>
+              <p className="mt-3 leading-7 text-zinc-500">A simple way to find a plan, invite someone, or see what&apos;s close.</p>
             </div>
 
             <div className="grid gap-5 md:grid-cols-3">

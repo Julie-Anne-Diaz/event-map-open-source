@@ -57,7 +57,7 @@ export default function EventsPage() {
         <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between animate-enter">
           <div>
             <p className="text-sm font-bold text-violet-700">vidamobile events</p>
-            <h1 className="mt-1 text-4xl font-extrabold tracking-tight text-zinc-900">What's happening</h1>
+            <h1 className="mt-1 text-4xl font-extrabold tracking-tight text-zinc-900">What&apos;s happening</h1>
             <p className="mt-2 text-zinc-500">Pick a plan. The hard part is deciding which one.</p>
           </div>
 

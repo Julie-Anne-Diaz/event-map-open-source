@@ -83,10 +83,10 @@ export default function ProfilePage() {
 
         <div className="mt-8">
           <h2 className="text-xl font-extrabold text-zinc-900">Your events</h2>
-          <p className="mt-1 text-sm text-zinc-500">Everything you've put on the map.</p>
+          <p className="mt-1 text-sm text-zinc-500">Everything you&apos;ve put on the map.</p>
 
           {events.length === 0 ? (
-            <div className="mt-5 rounded-2xl border border-zinc-200 bg-white p-8 text-center text-sm text-zinc-500">You haven't created any events yet.</div>
+            <div className="mt-5 rounded-2xl border border-zinc-200 bg-white p-8 text-center text-sm text-zinc-500">You haven&apos;t created any events yet.</div>
           ) : (
             <ul className="mt-5 grid gap-4 md:grid-cols-2">
               {events.map((event) => (
