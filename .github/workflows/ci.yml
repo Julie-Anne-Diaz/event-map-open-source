@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - main
-      - ui-refresh
 
   pull_request:
     branches:
       - main
-
 
 permissions:
   contents: read
