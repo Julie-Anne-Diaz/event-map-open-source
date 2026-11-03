@@ -29,3 +29,10 @@ app.include_router(invites.router)
 @app.get("/")
 def root():
     return {"message": "Event Mapping API running"}
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy",
+        "service": "vidamobile-api"
+    }
