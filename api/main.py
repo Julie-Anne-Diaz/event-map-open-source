@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import socket
 
 from routers import auth, events, users, friends, invites
 from database import Base, engine
@@ -29,3 +30,11 @@ app.include_router(invites.router)
 @app.get("/")
 def root():
     return {"message": "Event Mapping API running"}
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy",
+        "service": "vidamobile-api",
+        "instance": socket.gethostname()
+    }
